@@ -1,19 +1,19 @@
 import copy
 
 
-class board:
+class connect4:
     """Class to model a connect4 board."""
 
     def __init__(self):
         """Constructor of the board."""
-        self.__matrix = []
+        self.__board = []
         for i in range(6):
-            self.__matrix.append([0, 0, 0, 0, 0, 0, 0])
+            self.__board.append([0, 0, 0, 0, 0, 0, 0])
 
     def __str__(self) -> str:
         """str function of a connect 4 board."""
         string = ""
-        for row in self.__matrix:
+        for row in self.__board:
             string += " | "
             for cell in row:
                 string += str(cell) + " "
@@ -28,7 +28,7 @@ class board:
             return False
         for i in range(6):
             for j in range(7):
-                if self.__matrix[i][j] != board.__matrix[i][j]:
+                if self.__board[i][j] != board.__board[i][j]:
                     return False
         return True
 
@@ -40,19 +40,19 @@ class board:
         if 0 > column or column > 6:
             raise Exception("Wrong column.")
         row = 5
-        while self.__matrix[row][column] != 0:
+        while self.__board[row][column] != 0:
             row -= 1
             if row < 0:
                 return True
         if player_one:
-            self.__matrix[row][column] = 1
+            self.__board[row][column] = 1
         else:
-            self.__matrix[row][column] = 2
+            self.__board[row][column] = 2
         return False
 
     def get_board(self) -> list:
         """Returns a copy of the board"""
-        return copy.deepcopy(self.__matrix)
+        return copy.deepcopy(self.__board)
 
     def finished(self) -> int:
         """Checks the board for a winner. If there is a winnner, 
@@ -102,7 +102,7 @@ class board:
 
     def __check_contiguous(self, row, column, current, contiguous) -> tuple:
         """Auxiliary function to check winning plays."""
-        cell = self.__matrix[row][column]
+        cell = self.__board[row][column]
         if cell == 0:
             return (0, 0)
         if cell != current:
@@ -110,7 +110,7 @@ class board:
         return (current, contiguous + 1)
 
 
-b = board()
+b = connect4()
 b.make_play(True, 0)
 b.make_play(True, 0)
 b.make_play(True, 0)
