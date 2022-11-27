@@ -6,6 +6,7 @@ class connect4:
 
     def __init__(self):
         """Constructor of the board."""
+        self.winner = 0
         self.__board = []
         for i in range(6):
             self.__board.append([0, 0, 0, 0, 0, 0, 0])
@@ -67,6 +68,7 @@ class connect4:
                 (current, contiguous) = self.__check_contiguous(
                     row, column, current, contiguous)
                 if contiguous == 4:
+                    self.winner = current
                     return current
         # check for win by a vertical play
         for column in range(7):
@@ -75,6 +77,7 @@ class connect4:
                 (current, contiguous) = self.__check_contiguous(
                     row, column, current, contiguous)
                 if contiguous == 4:
+                    self.winner = current
                     return current
         # check for win by a diagonal play (/)
         l = [(0, 3), (0, 4), (0, 5), (0, 6), (1, 6), (2, 6)]
@@ -85,6 +88,7 @@ class connect4:
                 (current, contiguous) = self.__check_contiguous(
                     row, column, current, contiguous)
                 if contiguous == 4:
+                    self.winner = current
                     return current
                 row += 1
                 column -= 1
@@ -97,6 +101,7 @@ class connect4:
                 (current, contiguous) = self.__check_contiguous(
                     row, column, current, contiguous)
                 if contiguous == 4:
+                    self.winner = current
                     return current
                 row += 1
                 column += 1
@@ -111,7 +116,7 @@ class connect4:
             return (cell, 1)
         return (current, contiguous + 1)
 
-
+"""
 b = connect4()
 b.make_play(True, 0)
 b.make_play(True, 0)
@@ -125,3 +130,4 @@ b.make_play(False, 2)
 b.make_play(True, 3)
 print(b)
 print("finished: " + str(b.finished()))
+"""
