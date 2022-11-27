@@ -13,13 +13,15 @@ class connect4:
     def __str__(self) -> str:
         """str function of a connect 4 board."""
         string = ""
+        n = 0
+        string += "    0 1 2 3 4 5 6\n"
+        string += "    _____________\n"
         for row in self.__board:
-            string += " | "
+            string += str(n)+ " | "
+            n += 1
             for cell in row:
                 string += str(cell) + " "
             string += "\n"
-        string += " | _____________\n"
-        string += "   0 1 2 3 4 5 6"
         return string
 
     def __eq__(self, board) -> bool:
