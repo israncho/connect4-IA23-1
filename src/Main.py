@@ -2,6 +2,7 @@ import Connect4
 
 
 def user_input() -> int:
+    """Function to get a valid play from the user."""
     not_finished = True
     while not_finished:
         usr_input = input()
