@@ -6,6 +6,7 @@ class connect4:
 
     def __init__(self, new_game: bool = True, game_board: list = []):
         """Constructor of the connect4."""
+        assert type(game_board) == list
         self.winner = 0
         self.__board = []
         if not new_game:
@@ -125,6 +126,16 @@ class connect4:
         if cell != current:
             return (cell, 1)
         return (current, contiguous + 1)
+
+    def possible_plays(self) -> list:
+        """Function to get all possible plays."""
+        plays = []
+        count = 0
+        for cell in self.__board[0]:
+            if cell == 0:
+                plays.append(count)
+            count += 1
+        return plays
 
 
 """
