@@ -28,7 +28,7 @@ class node:
             copy.make_play(True if next_player == 1 else False, play)
             new_node = node(copy, next_player, self, self.__height + 1) 
             new_node.__heuristic = self.heuristic(self, play)
-            self.__children.append(new_node)
+            self.__children.append((new_node, play))
 
     def heuristic(self, node, move):
         return None
@@ -52,5 +52,5 @@ while i < 6:
     count += 1
     curr_node.expand()
     for child in curr_node.get_children():
-        queue.append(child)
+        queue.append(child[0])
     i = curr_node.get_height()
