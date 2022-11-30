@@ -5,7 +5,7 @@ class connect4:
     """Class to model a connect4 board."""
 
     def __init__(self, new_game: bool = True, game_board: list = []):
-        """Constructor of the board."""
+        """Constructor of the connect4."""
         self.winner = 0
         self.__board = []
         if not new_game:
@@ -20,7 +20,7 @@ class connect4:
             self.__board.append([0, 0, 0, 0, 0, 0, 0])
 
     def __str__(self) -> str:
-        """str function of a connect 4 board."""
+        """str function of a connect4."""
         string = ""
         n = 0
         string += "    0 1 2 3 4 5 6\n"
@@ -33,13 +33,15 @@ class connect4:
             string += "\n"
         return string
 
-    def __eq__(self, board) -> bool:
-        """Equals function to compare two boards."""
-        if type(self) != type(board):
+    def __eq__(self, connect4) -> bool:
+        """Equals function to compare two connect4."""
+        if type(self) != type(connect4):
+            return False
+        if self.winner != connect4.winner:
             return False
         for i in range(6):
             for j in range(7):
-                if self.__board[i][j] != board.__board[i][j]:
+                if self.__board[i][j] != connect4.__board[i][j]:
                     return False
         return True
 
