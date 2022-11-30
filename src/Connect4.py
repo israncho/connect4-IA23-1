@@ -4,10 +4,18 @@ import copy
 class connect4:
     """Class to model a connect4 board."""
 
-    def __init__(self):
+    def __init__(self, new_game: bool = True, game_board: list = []):
         """Constructor of the board."""
         self.winner = 0
         self.__board = []
+        if not new_game:
+            assert len(game_board) == 6
+            for row in game_board:
+                assert len(row) == 7
+                for cell in row:
+                    assert type(cell) == int and cell > -1 and cell < 3
+            self.__board = game_board
+            return
         for i in range(6):
             self.__board.append([0, 0, 0, 0, 0, 0, 0])
 
@@ -18,7 +26,7 @@ class connect4:
         string += "    0 1 2 3 4 5 6\n"
         string += "    _____________\n"
         for row in self.__board:
-            string += str(n)+ " | "
+            string += str(n) + " | "
             n += 1
             for cell in row:
                 string += str(cell) + " "
@@ -116,6 +124,7 @@ class connect4:
             return (cell, 1)
         return (current, contiguous + 1)
 
+
 """
 b = connect4()
 b.make_play(True, 0)
@@ -130,4 +139,14 @@ b.make_play(False, 2)
 b.make_play(True, 3)
 print(b)
 print("finished: " + str(b.finished()))
+b = connect4()
+print(b)
+c = connect4(False, b.get_board())
+print(c)
+c.make_play(True, 0)
+c.make_play(True, 0)
+c.make_play(True, 0)
+c.make_play(True, 0)
+print(c)
+print(b)
 """
