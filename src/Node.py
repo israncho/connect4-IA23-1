@@ -24,10 +24,10 @@ class node:
         """Function to expand this node."""
         next_player = 1 if self.__current_player == 2 else 2
         for play in self.__connect4.possible_plays():
-            copy = Connect4.connect4(self.__connect4.get_board())
+            copy = Connect4.connect4(False, self.__connect4.get_board())
             copy.make_play(True if next_player == 1 else False, play)
             new_node = node(copy, next_player, self, self.__height + 1) 
-            new_node.heuristic = self.heuristic(self, play)
+            new_node.__heuristic = self.heuristic(self, play)
             self.__children.append(new_node)
 
     def heuristic(self, node, move):
@@ -36,10 +36,21 @@ class node:
     def get_children(self):
         """Function to get the children of this node."""
         return self.__children
+    
+    def get_height(self):
+        return self.__height
 
 b = Connect4.connect4()
 n = node(b, 2)
-print(n)
-n.expand()
-for node in n.get_children():
-    print(node)
+queue = []
+queue.append(n)
+i = 0
+count = 0
+while i < 6:
+    curr_node = queue.pop(0)
+    print(count)
+    count += 1
+    curr_node.expand()
+    for child in curr_node.get_children():
+        queue.append(child)
+    i = curr_node.get_height()
