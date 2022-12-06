@@ -14,7 +14,7 @@ class node:
         self.__children = []
         self.__current_player = current_player
         self.__parent = parent
-        self.__heuristic = None
+        self.__heuristic = 0 
         self.__height = height
 
     def __str__(self) -> str:
@@ -28,7 +28,16 @@ class node:
             copy.make_play(True if next_player == 1 else False, play)
             new_node = node(copy, next_player, self, self.__height + 1)
             new_node.__heuristic = self.heuristic(new_node, play)
+            self.__heuristic -= new_node.__heuristic
+            self.__update_heuristic(3)
             self.__children.append((new_node, play))
+    
+    def __update_heuristic(self, up_levels) -> None:
+        if up_levels <= 0 or self.__parent == None:
+            return
+        self.__parent.__heuristic -= self.__heuristic
+        self.__parent.__update_heuristic(up_levels - 1)
+        
 
     def heuristic(self, next_node, move):
         """Heuristic of a play, the better the play the higher value."""
@@ -41,61 +50,75 @@ class node:
         finish_status = next_node.__connect4.finished()
         if finish_status != 0:
             if finish_status == player:
-                return 1000
+                return 1000000
             else:
-                return -1000
+                return -1000000
         return self.__check_contiguous(row, move, player, board)
 
     def __check_contiguous(self, row: int, column: int, player: int, board: list) -> int:
         """Aux private function to check for contiguous chips of the player."""
         contiguous = 0
         # down
+        mult = 1
         curr_row = row + 1
         while curr_row < 6 and board[curr_row][column] == player:
-            contiguous += 1
+            contiguous += 1 * mult
+            mult += 3
             curr_row += 1
 
         # left
+        mult = 1
         curr_col = column - 1
         while curr_col > -1 and board[row][curr_col] == player:
-            contiguous += 1
+            contiguous += 1 * mult
+            mult += 3
             curr_col -= 1
 
         # right
+        mult = 1
         curr_col = column + 1
         while curr_col < 7 and board[row][curr_col] == player:
-            contiguous += 1
+            contiguous += 1 * mult
+            mult += 3
             curr_col += 1
 
         # up-right
+        mult = 1
         curr_row = row - 1
         curr_col = column + 1
         while curr_col < 7 and curr_row > -1 and board[curr_row][curr_col] == player:
-            contiguous += 1
+            contiguous += 1 * mult
+            mult += 3
             curr_row -= 1
             curr_col += 1
 
         # up-left
+        mult = 1
         curr_row = row - 1
         curr_col = column - 1
         while curr_col > -1 and curr_row > -1 and board[curr_row][curr_col] == player:
-            contiguous += 1
+            contiguous += 1 * mult
+            mult += 3
             curr_row -= 1
             curr_col -= 1
 
         # down-right
+        mult = 1
         curr_row = row + 1
         curr_col = column + 1
         while curr_col < 7 and curr_row < 6 and board[curr_row][curr_col] == player:
-            contiguous += 1
+            contiguous += 1 * mult
+            mult += 3
             curr_row += 1
             curr_col += 1
 
         # down-left
+        mult = 1
         curr_row = row + 1
         curr_col = column - 1
         while curr_col > -1 and curr_row < 6 and board[curr_row][curr_col] == player:
-            contiguous += 1
+            contiguous += 1 * mult
+            mult += 3
             curr_row += 1
             curr_col -= 1
         return contiguous
@@ -142,3 +165,16 @@ n.expand()
 print(n.get_children()[1][0])
 print(n.heuristic(n.get_children()[1][0], n.get_children()[1][1]))
 """
+b = Connect4.connect4()
+b.make_play(False,3)
+b.make_play(True,3)
+b.make_play(False,4)
+n = node(b, 2)
+n.expand()
+for (child, play) in n.get_children():
+    child.expand()
+print(n)
+print("--------------------")
+for (child, play) in n.get_children():
+    print(child)
+print("--------------------")
