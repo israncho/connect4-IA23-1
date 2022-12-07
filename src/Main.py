@@ -21,7 +21,7 @@ def user_input() -> int:
 game = Connect4.connect4()
 
 player1 = True
-while game.finished() == 0:
+while game.finished() == 0 and game.possible_plays() != []:
     print(game)
     print("player", end="")
     if player1:
@@ -38,4 +38,4 @@ while game.finished() == 0:
     print()
 
 print(game)
-print("El ganador es el jugador " + str(game.winner))
+print("The winner is player " + str(game.winner))
