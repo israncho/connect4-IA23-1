@@ -48,12 +48,8 @@ class node:
             row += 1
         player = board[row][move]
         assert player != 0
-        finish_status = next_node.__connect4.finished()
-        if finish_status != 0:
-            if finish_status == player:
-                return 100000
-            else:
-                return -100000
+        if next_node.__connect4.finished() == player:
+            return 1000000
         return self.__check_contiguous(row, move, player, board)
 
     def __check_contiguous(self, row: int, column: int, player: int, board: list) -> int:
@@ -63,7 +59,7 @@ class node:
         mult = 1
         curr_row = row + 1
         while curr_row < 6 and board[curr_row][column] == player:
-            contiguous += 1 * mult
+            contiguous += mult
             mult += 4
             curr_row += 1
 
@@ -71,7 +67,7 @@ class node:
         mult = 1
         curr_col = column - 1
         while curr_col > -1 and board[row][curr_col] == player:
-            contiguous += 1 * mult
+            contiguous += mult
             mult += 4
             curr_col -= 1
 
@@ -79,7 +75,7 @@ class node:
         mult = 1
         curr_col = column + 1
         while curr_col < 7 and board[row][curr_col] == player:
-            contiguous += 1 * mult
+            contiguous += mult
             mult += 4
             curr_col += 1
 
@@ -88,7 +84,7 @@ class node:
         curr_row = row - 1
         curr_col = column + 1
         while curr_col < 7 and curr_row > -1 and board[curr_row][curr_col] == player:
-            contiguous += 1 * mult
+            contiguous += mult
             mult += 4
             curr_row -= 1
             curr_col += 1
@@ -98,7 +94,7 @@ class node:
         curr_row = row - 1
         curr_col = column - 1
         while curr_col > -1 and curr_row > -1 and board[curr_row][curr_col] == player:
-            contiguous += 1 * mult
+            contiguous += mult
             mult += 4
             curr_row -= 1
             curr_col -= 1
@@ -108,7 +104,7 @@ class node:
         curr_row = row + 1
         curr_col = column + 1
         while curr_col < 7 and curr_row < 6 and board[curr_row][curr_col] == player:
-            contiguous += 1 * mult
+            contiguous += mult
             mult += 4
             curr_row += 1
             curr_col += 1
@@ -118,7 +114,7 @@ class node:
         curr_row = row + 1
         curr_col = column - 1
         while curr_col > -1 and curr_row < 6 and board[curr_row][curr_col] == player:
-            contiguous += 1 * mult
+            contiguous += mult
             mult += 4
             curr_row += 1
             curr_col -= 1
@@ -166,11 +162,9 @@ n.expand()
 print(n.get_children()[1][0])
 print(n.heuristic(n.get_children()[1][0], n.get_children()[1][1]))
 """
+
 b = Connect4.connect4()
-b.make_play(True,3)
-b.make_play(False,3)
-b.make_play(True,4)
-n = node(b, 1)
+n = node(b, 2)
 n.expand()
 for (child, play) in n.get_children():
     child.expand()
@@ -178,7 +172,13 @@ for (child, play) in n.get_children():
         c.expand()
 
 print(n)
-print("--------------------")
 for (child, play) in n.get_children():
+    print("--------------------------------------------------------------------------------")
     print(child)
-print("--------------------")
+    for (c, p) in child.get_children():
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print(c)
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        for (cc, pp) in c.get_children():
+            print(cc)
+    print("--------------------------------------------------------------------------------")
