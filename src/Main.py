@@ -16,6 +16,7 @@ def user_input() -> int:
             print("Invalid number!!\n\nTry again: ",end="")
             continue
         not_finished = False 
+
     return usr_int 
 
 game = Connect4.connect4()
@@ -30,12 +31,21 @@ while game.finished() == 0 and game.possible_plays() != []:
         print("2", end="")
     print(" make a play: ", end="")
     play = user_input() 
-    game.make_play(player1, int(play))
-    if player1:
+    value=game.make_play(player1, int(play))
+    if value:
+        if player1:
+           player1 = True
+        else:
+           player1 = False
+    else:       
+     if player1:
         player1 = False
-    else:
+     else:
         player1 = True
     print()
 
 print(game)
-print("The winner is player " + str(game.winner))
+if (game.winner==0):
+    print("There was a tid")
+else:    
+    print("The winner is player " + str(game.winner))

@@ -53,11 +53,14 @@ class connect4:
             raise Exception("Wrong argument.")
         if 0 > column or column > 6:
             raise Exception("Wrong column.")
+
         row = 5
         while self.__board[row][column] != 0:
             row -= 1
             if row < 0:
+                print("That column is already full, try another oneo")
                 return True
+
         if player_one:
             self.__board[row][column] = 1
         else:
@@ -116,6 +119,8 @@ class connect4:
                     return current
                 row += 1
                 column += 1
+
+
         return 0
 
     def __check_contiguous(self, row, column, current, contiguous) -> tuple:
