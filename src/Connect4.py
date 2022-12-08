@@ -58,7 +58,6 @@ class connect4:
         while self.__board[row][column] != 0:
             row -= 1
             if row < 0:
-                print("That column is already full, try another oneo")
                 return True
 
         if player_one:
