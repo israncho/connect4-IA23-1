@@ -231,17 +231,18 @@ for (child, play) in n.get_children():
     print("--------------------------------------------------------------------------------")
 """
 
+"""
 b = Connect4.connect4()
 b.make_play(True, 3)
 b.make_play(True, 4)
 b.make_play(False, 3)
 n = node(b, 1)
 n.height_4_tree()
-"""
 for node in n.get_all_leaves():
     print(node)
-"""
 print(n)
 print("---------------------------------------------------")
 for (c, p) in n.get_children():
     print(c)
+
+"""

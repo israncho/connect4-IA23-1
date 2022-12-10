@@ -1,4 +1,5 @@
 import Connect4
+import Node
 
 
 def user_input() -> int:
@@ -20,21 +21,39 @@ def user_input() -> int:
     return usr_int 
 
 game = Connect4.connect4()
+curr_node = Node.node(game, 2)
+curr_node.expand()
 
 player1 = True
 while game.finished() == 0 and game.possible_plays() != []:
     print(game)
     print("player", end="")
+    play = None
     if player1:
         print("1", end="")
+        print(" make a play: ", end="")
+        play = user_input() 
     else:
-        print("2", end="")
-    print(" make a play: ", end="")
-    play = user_input() 
-    if game.make_play(player1, int(play)):
+        # children is a list of tuples, (child, play)
+        children = curr_node.get_children()
+        (curr_best_heuristic, curr_best_play) = (children[0][0].get_heuristic(), children[0][1])
+        for (child, curr_play) in children:
+            if child.get_heuristic() > curr_best_heuristic:
+                curr_best_heuristic = child.get_heuristic()
+                curr_best_play = curr_play
+                curr_node = child
+        curr_node.height_4_tree()
+        play = curr_best_play
+
+
+    if game.make_play(player1, play):
         print(" Invalid play!!!!!!!!\n")
         continue
     if player1:
+        for (child, posible_play) in curr_node.get_children():
+            if play == posible_play:
+                curr_node = child 
+        curr_node.height_4_tree()
         player1 = False
     else:
         player1 = True
