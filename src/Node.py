@@ -14,7 +14,7 @@ class node:
         self.__children = []
         self.__current_player = current_player
         self.__parent = parent
-        self.__heuristic = 0 
+        self.__heuristic = 0
         self.__height = height
 
     def __str__(self) -> str:
@@ -28,17 +28,9 @@ class node:
             copy.make_play(True if next_player == 1 else False, play)
             new_node = node(copy, next_player, self, self.__height + 1)
             new_node.__heuristic = self.heuristic(new_node, play)
-            self.__heuristic -= new_node.__heuristic * .14
-            self.__update_heuristic(4)
+            #self.__heuristic -= new_node.__heuristic * .14
+            # self.__update_heuristic(4)
             self.__children.append((new_node, play))
-    
-    def __update_heuristic(self, up_levels) -> None:
-        """Aux function to update the heuristic of ancestor nodes."""
-        if up_levels <= 0 or self.__parent == None:
-            return
-        self.__parent.__heuristic -= self.__heuristic * .14
-        self.__parent.__update_heuristic(up_levels - 1)
-        
 
     def heuristic(self, next_node, move):
         """Heuristic of a play, the better the play the higher value."""
@@ -135,14 +127,52 @@ class node:
     def get_heuristic(self) -> int:
         """Function to get the heuristic of this node."""
         return self.__heuristic
-    
+
     def get_current_player(self) -> int:
         """Function to get the current player of this node."""
         return self.__current_player
-    
+
     def get_board(self) -> list:
         """Function to get the board of this node."""
         return self.__connect4.get_board()
+
+    def height_4_tree(self) -> None:
+        """This node is taken as root and generates a tree of all the posible
+        moves 4 shifts ahead using a limited (by height) breadth first search.
+        """
+        queue = [self]
+        expected_height = self.__height + 4
+        nodes = {self.__height: [self], self.__height +
+                 1: [], self.__height + 2: [], self.__height + 3: []}
+        while queue != []:
+            curr_node = queue.pop(0)
+            if curr_node.get_children() == []:
+                curr_node.expand()
+            for (child, _) in curr_node.get_children():
+                if child.__height < expected_height:
+                    queue.append(child)
+                    nodes[child.__height].append(child)
+
+        levels = [3, 2, 1, 0]
+        for level in levels:
+            # update heuristic of nodes of that level
+            for inner_node in nodes[self.__height + level]:
+                for (child, _) in inner_node.get_children():
+                    inner_node.__heuristic -= child.__heuristic * .01
+
+    def get_all_leaves(self) -> list:
+        """Returns all the leaves of this subtree."""
+        leaves = []
+        queue = []
+        queue.append(self)
+        while queue != []:
+            curr_node = queue.pop(0)
+            if curr_node.get_children() == []:
+                leaves.append(curr_node)
+                continue
+            for child in curr_node.get_children():
+                queue.append(child[0])
+        return leaves
 
 
 """
@@ -179,6 +209,7 @@ print(n.get_children()[1][0])
 print(n.heuristic(n.get_children()[1][0], n.get_children()[1][1]))
 """
 
+"""
 b = Connect4.connect4()
 n = node(b, 2)
 n.expand()
@@ -198,3 +229,19 @@ for (child, play) in n.get_children():
         for (cc, pp) in c.get_children():
             print(cc)
     print("--------------------------------------------------------------------------------")
+"""
+
+b = Connect4.connect4()
+b.make_play(True, 3)
+b.make_play(True, 4)
+b.make_play(False, 3)
+n = node(b, 1)
+n.height_4_tree()
+"""
+for node in n.get_all_leaves():
+    print(node)
+"""
+print(n)
+print("---------------------------------------------------")
+for (c, p) in n.get_children():
+    print(c)
