@@ -120,13 +120,29 @@ class node:
             curr_col -= 1
         return contiguous
 
-    def get_children(self):
+    def get_children(self) -> list:
         """Function to get the children of this node."""
         return self.__children
 
-    def get_height(self):
+    def get_height(self) -> int:
         """Function to get the height of this node."""
         return self.__height
+
+    def get_parent(self):
+        """Function to get the parent of this node."""
+        return self.__parent
+
+    def get_heuristic(self) -> int:
+        """Function to get the heuristic of this node."""
+        return self.__heuristic
+    
+    def get_current_player(self) -> int:
+        """Function to get the current player of this node."""
+        return self.__current_player
+    
+    def get_board(self) -> list:
+        """Function to get the board of this node."""
+        return self.__connect4.get_board()
 
 
 """
