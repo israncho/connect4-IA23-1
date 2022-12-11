@@ -21,7 +21,9 @@ class node:
         return str(self.__connect4) + "\nplayer: " + str(self.__current_player) + ", height: " + str(self.__height) + ", heuristic: " + str(self.__heuristic) + "\n\n"
 
     def expand(self) -> None:
-        """Function to expand this node."""
+        """Function to expand this node. Won't expand finished games"""
+        if self.__connect4.finished() != 0:
+            return
         next_player = 1 if self.__current_player == 2 else 2
         for play in self.__connect4.possible_plays():
             copy = Connect4.connect4(False, self.__connect4.get_board())
