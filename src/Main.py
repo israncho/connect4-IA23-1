@@ -40,7 +40,6 @@ while game.finished() == 0 and game.possible_plays() != []:
             if child.get_heuristic() > curr_best_heuristic:
                 curr_best_heuristic = child.get_heuristic()
                 curr_best_play = curr_play
-                curr_node = child
         play = curr_best_play
 
 
@@ -50,9 +49,7 @@ while game.finished() == 0 and game.possible_plays() != []:
     print(game)
     if player1:
         print("\nAI making a move")
-        for (child, posible_play) in curr_node.get_children():
-            if play == posible_play:
-                curr_node = child 
+        curr_node = Node.node(game, 1)
         curr_node.height_4_tree()
         player1 = False
     else:
