@@ -140,30 +140,3 @@ class connect4:
                 plays.append(count)
             count += 1
         return plays
-
-
-"""
-b = connect4()
-b.make_play(True, 0)
-b.make_play(True, 0)
-b.make_play(True, 0)
-b.make_play(True, 1)
-b.make_play(True, 1)
-b.make_play(True, 2)
-b.make_play(False, 0)
-b.make_play(False, 1)
-b.make_play(False, 2)
-b.make_play(True, 3)
-print(b)
-print("finished: " + str(b.finished()))
-b = connect4()
-print(b)
-c = connect4(False, b.get_board())
-print(c)
-c.make_play(True, 0)
-c.make_play(True, 0)
-c.make_play(True, 0)
-c.make_play(True, 0)
-print(c)
-print(b)
-"""

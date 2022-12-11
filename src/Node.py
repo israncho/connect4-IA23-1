@@ -30,8 +30,6 @@ class node:
             copy.make_play(True if next_player == 1 else False, play)
             new_node = node(copy, next_player, self, self.__height + 1)
             new_node.__heuristic = self.heuristic(new_node, play)
-            #self.__heuristic -= new_node.__heuristic * .14
-            # self.__update_heuristic(4)
             self.__children.append((new_node, play))
 
     def heuristic(self, next_node, move):
@@ -175,76 +173,3 @@ class node:
             for child in curr_node.get_children():
                 queue.append(child[0])
         return leaves
-
-
-"""
-b = Connect4.connect4()
-n = node(b, 2)
-queue = []
-queue.append(n)
-i = 0
-count = 0
-while i < 6:
-    curr_node = queue.pop(0)
-    print(count)
-    count += 1
-    curr_node.expand()
-    for child in curr_node.get_children():
-        queue.append(child[0])
-    i = curr_node.get_height()
-"""
-"""
-b = Connect4.connect4()
-
-b.make_play(False, 1)
-b.make_play(True, 1)
-b.make_play(False, 1)
-b.make_play(True, 1)
-b.make_play(True, 1)
-
-n = node(b, 2)
-n.expand()
-
-n = node(b, 2)
-n.expand()
-print(n.get_children()[1][0])
-print(n.heuristic(n.get_children()[1][0], n.get_children()[1][1]))
-"""
-
-"""
-b = Connect4.connect4()
-n = node(b, 2)
-n.expand()
-for (child, play) in n.get_children():
-    child.expand()
-    for (c,p) in child.get_children():
-        c.expand()
-
-print(n)
-for (child, play) in n.get_children():
-    print("--------------------------------------------------------------------------------")
-    print(child)
-    for (c, p) in child.get_children():
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        print(c)
-        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-        for (cc, pp) in c.get_children():
-            print(cc)
-    print("--------------------------------------------------------------------------------")
-"""
-
-"""
-b = Connect4.connect4()
-b.make_play(True, 3)
-b.make_play(True, 4)
-b.make_play(False, 3)
-n = node(b, 1)
-n.height_4_tree()
-for node in n.get_all_leaves():
-    print(node)
-print(n)
-print("---------------------------------------------------")
-for (c, p) in n.get_children():
-    print(c)
-
-"""
