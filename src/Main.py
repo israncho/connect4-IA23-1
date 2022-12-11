@@ -27,11 +27,9 @@ curr_node.expand()
 player1 = True
 while game.finished() == 0 and game.possible_plays() != []:
     print(game)
-    print("player", end="")
     play = None
     if player1:
-        print("1", end="")
-        print(" make a play: ", end="")
+        print("player1 make a play: ", end="")
         play = user_input() 
     else:
         # children is a list of tuples, (child, play)
