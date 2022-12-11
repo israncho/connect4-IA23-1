@@ -41,7 +41,7 @@ class node:
         player = board[row][move]
         assert player != 0
         if next_node.__connect4.finished() == player:
-            return 1000000
+            return 1000000000
         return self.__check_contiguous(row, move, player, board)
 
     def __check_contiguous(self, row: int, column: int, player: int, board: list) -> int:
@@ -141,9 +141,9 @@ class node:
         moves 4 shifts ahead using a limited (by height) breadth first search.
         """
         queue = [self]
-        expected_height = self.__height + 4
+        expected_height = self.__height + 5
         nodes = {self.__height: [self], self.__height +
-                 1: [], self.__height + 2: [], self.__height + 3: []}
+                 1: [], self.__height + 2: [], self.__height + 3: [], self.__height + 4: []}
         while queue != []:
             curr_node = queue.pop(0)
             if curr_node.get_children() == []:
@@ -153,12 +153,12 @@ class node:
                     queue.append(child)
                     nodes[child.__height].append(child)
 
-        levels = [3, 2, 1, 0]
+        levels = [4, 3, 2, 1, 0]
         for level in levels:
             # update heuristic of nodes of that level
             for inner_node in nodes[self.__height + level]:
                 for (child, _) in inner_node.get_children():
-                    inner_node.__heuristic -= child.__heuristic * .01
+                    inner_node.__heuristic -= child.__heuristic * .2
 
     def get_all_leaves(self) -> list:
         """Returns all the leaves of this subtree."""
