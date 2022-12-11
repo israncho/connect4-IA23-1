@@ -21,15 +21,15 @@ class node:
         return str(self.__connect4) + "\nplayer: " + str(self.__current_player) + ", height: " + str(self.__height) + ", heuristic: " + str(self.__heuristic) + "\n\n"
 
     def expand(self) -> None:
-        """Function to expand this node."""
+        """Function to expand this node. Won't expand finished games"""
+        if self.__connect4.finished() != 0:
+            return
         next_player = 1 if self.__current_player == 2 else 2
         for play in self.__connect4.possible_plays():
             copy = Connect4.connect4(False, self.__connect4.get_board())
             copy.make_play(True if next_player == 1 else False, play)
             new_node = node(copy, next_player, self, self.__height + 1)
             new_node.__heuristic = self.heuristic(new_node, play)
-            #self.__heuristic -= new_node.__heuristic * .14
-            # self.__update_heuristic(4)
             self.__children.append((new_node, play))
 
     def heuristic(self, next_node, move):
@@ -41,7 +41,7 @@ class node:
         player = board[row][move]
         assert player != 0
         if next_node.__connect4.finished() == player:
-            return 1000000
+            return 1000000000
         return self.__check_contiguous(row, move, player, board)
 
     def __check_contiguous(self, row: int, column: int, player: int, board: list) -> int:
@@ -158,7 +158,7 @@ class node:
             # update heuristic of nodes of that level
             for inner_node in nodes[self.__height + level]:
                 for (child, _) in inner_node.get_children():
-                    inner_node.__heuristic -= child.__heuristic * .01
+                    inner_node.__heuristic -= child.__heuristic * .2
 
     def get_all_leaves(self) -> list:
         """Returns all the leaves of this subtree."""
@@ -173,75 +173,3 @@ class node:
             for child in curr_node.get_children():
                 queue.append(child[0])
         return leaves
-
-
-"""
-b = Connect4.connect4()
-n = node(b, 2)
-queue = []
-queue.append(n)
-i = 0
-count = 0
-while i < 6:
-    curr_node = queue.pop(0)
-    print(count)
-    count += 1
-    curr_node.expand()
-    for child in curr_node.get_children():
-        queue.append(child[0])
-    i = curr_node.get_height()
-"""
-"""
-b = Connect4.connect4()
-
-b.make_play(False, 1)
-b.make_play(True, 1)
-b.make_play(False, 1)
-b.make_play(True, 1)
-b.make_play(True, 1)
-
-n = node(b, 2)
-n.expand()
-
-n = node(b, 2)
-n.expand()
-print(n.get_children()[1][0])
-print(n.heuristic(n.get_children()[1][0], n.get_children()[1][1]))
-"""
-
-"""
-b = Connect4.connect4()
-n = node(b, 2)
-n.expand()
-for (child, play) in n.get_children():
-    child.expand()
-    for (c,p) in child.get_children():
-        c.expand()
-
-print(n)
-for (child, play) in n.get_children():
-    print("--------------------------------------------------------------------------------")
-    print(child)
-    for (c, p) in child.get_children():
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-        print(c)
-        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-        for (cc, pp) in c.get_children():
-            print(cc)
-    print("--------------------------------------------------------------------------------")
-"""
-
-b = Connect4.connect4()
-b.make_play(True, 3)
-b.make_play(True, 4)
-b.make_play(False, 3)
-n = node(b, 1)
-n.height_4_tree()
-"""
-for node in n.get_all_leaves():
-    print(node)
-"""
-print(n)
-print("---------------------------------------------------")
-for (c, p) in n.get_children():
-    print(c)
