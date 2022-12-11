@@ -25,12 +25,13 @@ curr_node = Node.node(game, 2)
 curr_node.expand()
 
 player1 = True
+print(game)
 while game.finished() == 0 and game.possible_plays() != []:
-    print(game)
     play = None
     if player1:
         print("player1 make a play: ", end="")
         play = user_input() 
+        print()
     else:
         # children is a list of tuples, (child, play)
         children = curr_node.get_children()
@@ -40,14 +41,15 @@ while game.finished() == 0 and game.possible_plays() != []:
                 curr_best_heuristic = child.get_heuristic()
                 curr_best_play = curr_play
                 curr_node = child
-        curr_node.height_4_tree()
         play = curr_best_play
 
 
     if game.make_play(player1, play):
         print(" Invalid play!!!!!!!!\n")
         continue
+    print(game)
     if player1:
+        print("\nAI making a move")
         for (child, posible_play) in curr_node.get_children():
             if play == posible_play:
                 curr_node = child 
