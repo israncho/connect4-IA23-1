@@ -34,3 +34,7 @@ ejecute el comando
 ```shell
 python3 src/Main.py
 ```
+
+### Notas
+
+El codigo fuente se encuentra en la carptea `src`
